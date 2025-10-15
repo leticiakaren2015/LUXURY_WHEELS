@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Criar Reserva{% endblock %}
+
+{% block content %}
+<h2>{% if editar %}Editar Reserva{% else %}Nova Reserva{% endif %}</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">{% if editar %}Atualizar{% else %}Criar{% endif %}</button>
+</form>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const clienteField = document.getElementById('id_cliente');
+    const dataInicio = document.getElementById('id_data_inicio');
+    const dataFim = document.getElementById('id_data_fim');
+    const valorTotal = document.getElementById('id_valor_total');
+
+    // Preços fixos conforme categoria
+    const precos = {
+        'Econômico': 50,
+        'Silver': 250,
+        'Gold': 600
+    };
+
+    function calcularValor() {
+        const clienteSelecionado = clienteField.options[clienteField.selectedIndex].text;
+        let categoria = 'Econômico';
+        if (clienteSelecionado.includes('Silver')) categoria = 'Silver';
+        if (clienteSelecionado.includes('Gold')) categoria = 'Gold';
+
+        const inicio = new Date(dataInicio.value);
+        const fim = new Date(dataFim.value);
+        if (inicio && fim && fim >= inicio) {
+            const dias = Math.ceil((fim - inicio) / (1000 * 60 * 60 * 24)) + 1;
+            const valor = dias * precos[categoria];
+            valorTotal.value = valor.toFixed(2);
+        }
+    }
+
+    dataInicio.addEventListener('change', calcularValor);
+    dataFim.addEventListener('change', calcularValor);
+    clienteField.addEventListener('change', calcularValor);
+});
+</script>
+
+{% endblock %}

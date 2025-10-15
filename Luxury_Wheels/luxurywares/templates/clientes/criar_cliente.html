@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Cadastro de Cliente{% endblock %}
+
+{% block content %}
+<h2>{% if form.instance.pk %}Editar Cliente{% else %}Novo Cliente{% endif %}</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">{% if form.instance.pk %}Atualizar{% else %}Cadastrar{% endif %}</button>
+</form>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Confirmar Exclusão{% endblock %}
+
+{% block content %}
+<h2>Tem certeza que deseja excluir esta reserva?</h2>
+
+<p><strong>Cliente:</strong> {{ reserva.cliente.nome }}</p>
+<p><strong>Veículo:</strong> {{ reserva.veiculo.modelo }}</p>
+<p><strong>Início:</strong> {{ reserva.data_inicio }}</p>
+<p><strong>Fim:</strong> {{ reserva.data_fim }}</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Sim, excluir</button>
+    <a href="{% url 'listar_reserva' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}
